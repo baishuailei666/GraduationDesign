@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="SMS_GraduationDesign:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="SMS_GraduationDesign.war">
+      <element id="artifact" artifact-name="SMS_GraduationDesign:war exploded" />
+    </root>
+  </artifact>
+</component>

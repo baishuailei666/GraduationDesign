@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+例如namespace="me.gacl.mapping.userMapper"就是me.gacl.mapping(包名)+userMapper(userMapper.xml文件去除后缀)
+ -->
+<mapper namespace="sms.dao.SupplierDao">
+    <!-- 在select标签中编写查询的SQL语句， 设置select标签的id属性为getUser，id属性值必须是唯一的，不能够重复
+    使用parameterType属性指明查询时使用的参数类型，resultType属性指明查询返回的结果集类型
+    resultType="me.gacl.entity.User"就表示将查询结果封装成一个User类的对象返回
+    User类就是users表所对应的实体类
+    -->
+
+    <!-- 添加(Add)供货商信息 -->
+    <insert id="addSupplier" parameterType="sms.entity.Supplier">
+        insert into supplier(supplier_name, goods_name, supplier_price, supplier_address, supplier_personnel, supplier_tel, supplier_email, category_name, goods_unit)
+        values(#{supplierName},#{goodsName},#{supplierPrice},#{supplierAddress},#{supplierPersonnel},#{supplierTel},#{supplierEmail},#{categoryName},#{goodsUnit})
+    </insert>
+
+    <!-- 删除(Delete)供货商信息 -->
+    <delete id="deleteSupplier" parameterType="int">
+        delete from supplier where supplier_id=#{supplierId}
+    </delete>
+
+    <!-- 修改(Update)供货商信息 -->
+    <update id="updateSupplier" parameterType="sms.entity.Supplier">
+        update
+        <set>
+            <if test="supplierName != null and supplierName != '' ">
+                supplier_name=#{supplierName},
+            </if>
+            <if test="goodsName != null and goodsName != '' ">
+                goods_name=#{goodsName},
+            </if>
+            <if test="supplierPrice != null and supplierPrice != '' ">
+                supplier_price=#{supplierPrice},
+            </if>
+            <if test="supplierAddress != null and supplierAddress != '' ">
+                supplier_address=#{supplierAddress},
+            </if>
+            <if test="supplierPersonnel != null and supplierPersonnel != '' ">
+                supplier_personnel=#{supplierPersonnel},
+            </if>
+            <if test="supplierTel != null and supplierTel != '' ">
+                supplier_tel=#{supplierTel},
+            </if>
+            <if test="supplierEmail != null and supplierEmail != '' ">
+                supplier_email=#{supplierEmail},
+            </if>
+            <if test="categoryName != null and categoryName != '' ">
+                category_name=#{categoryName},
+            </if>
+            <if test="goodsUnit != null and goodsUnit != '' ">
+                goods_unit=#{goodsUnit},
+            </if>
+        </set>
+        WHERE supplier_name=#{supplierName}
+    </update>
+
+    <!--根据供货商名称supplierName查询供货商信息-->
+    <select id="getSupplierByName" parameterType="String" resultMap="supplierResultMap">
+        select * from supplier where supplier_name LIKE concat('%',#{supplierName},'%') limit 0,10
+    </select>
+    <!--根据供货价格supplierPrice 降序查询供货商信息-->
+    <select id="getSupplierBySupplierPriceDESC" parameterType="int" resultMap="supplierResultMap">
+        select * from supplier order by supplier_price DESC limit 10
+    </select>
+    <!--根据供货价格supplierPrice 升序查询供货商信息-->
+    <select id="getSupplierBySupplierPriceASC" parameterType="int" resultMap="supplierResultMap">
+        select * from supplier order by supplier_price ASC limit 10
+    </select>
+    <!--根据种类categoryName查询供货商信息-->
+    <select id="getSupplierByCategoryName" parameterType="String" resultMap="supplierResultMap">
+        select * from supplier where category_name LIKE concat('%',#{categoryName},'%') limit 0,10
+    </select>
+
+    <!-- 查询所有供货商信息 -->
+    <select id="getAllSupplier" resultMap="supplierResultMap">
+        select * from supplier limit #{number},10
+    </select>
+
+    <resultMap id="supplierResultMap" type="sms.entity.Supplier">
+        <id property="supplierId" column="supplier_id"/>
+        <result property="supplierName" column="supplier_name"/>
+        <result property="goodsName" column="goods_name"/>
+        <result property="supplierPrice" column="supplier_price"/>
+        <result property="supplierAddress" column="supplier_address"/>
+        <result property="supplierPersonnel" column="supplier_personnel"/>
+        <result property="supplierTel" column="supplier_tel"/>
+        <result property="supplierEmail" column="supplier_email"/>
+        <result property="categoryName" column="category_name"/>
+        <result property="goodsUnit" column="goods_unit"/>
+    </resultMap>
+</mapper>

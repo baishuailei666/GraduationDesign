@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="sms@localhost">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.4">
+    <root id="1"/>
+    <schema id="2" parent="1" name="sms">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="3" parent="1" name="cms"/>
+    <schema id="4" parent="1" name="es"/>
+    <schema id="5" parent="1" name="information_schema"/>
+    <schema id="6" parent="1" name="mysql"/>
+    <schema id="7" parent="1" name="performance_schema"/>
+    <schema id="8" parent="1" name="sys"/>
+    <schema id="9" parent="1" name="hibernate"/>
+    <schema id="10" parent="1" name="springboot"/>
+    <table id="11" parent="2" name="category"/>
+    <table id="12" parent="2" name="goods"/>
+    <table id="13" parent="2" name="purchase"/>
+    <table id="14" parent="2" name="sales"/>
+    <table id="15" parent="2" name="supplier"/>
+    <table id="16" parent="2" name="userinfo"/>
+    <table id="17" parent="2" name="warehouse"/>
+    <column id="18" parent="11" name="category_id">
+      <Position>1</Position>
+      <Comment>商品种类编号</Comment>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="19" parent="11" name="category_name">
+      <Position>2</Position>
+      <Comment>商品种类</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <index id="20" parent="11" name="category_name">
+      <ColNames>category_name</ColNames>
+    </index>
+    <key id="21" parent="11" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>category_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="22" parent="12" name="goods_id">
+      <Position>1</Position>
+      <DataType>int(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="23" parent="12" name="goods_name">
+      <Position>2</Position>
+      <Comment>商品名称</Comment>
+      <DataType>varchar(50)|0</DataType>
+    </column>
+    <column id="24" parent="12" name="goods_barcode">
+      <Position>3</Position>
+      <Comment>商品条码</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <column id="25" parent="12" name="goods_unit">
+      <Position>4</Position>
+      <Comment>商品规格</Comment>
+      <DataType>varchar(5)|0</DataType>
+    </column>
+    <column id="26" parent="12" name="supplier_price">
+      <Position>5</Position>
+      <Comment>商品进货价</Comment>
+      <DataType>decimal(10,2)|0</DataType>
+    </column>
+    <column id="27" parent="12" name="goods_price">
+      <Position>6</Position>
+      <Comment>商品销售价</Comment>
+      <DataType>decimal(10,2)|0</DataType>
+    </column>
+    <column id="28" parent="12" name="supplier_name">
+      <Position>7</Position>
+      <Comment>商品生产商</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <column id="29" parent="12" name="supplier_address">
+      <Position>8</Position>
+      <Comment>商品生产地</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <column id="30" parent="12" name="category_name">
+      <Position>9</Position>
+      <Comment>商品类别</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <column id="31" parent="12" name="goods_sc">
+      <Position>10</Position>
+      <Comment>生成许可证编号</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <column id="32" parent="12" name="goods_content">
+      <Position>11</Position>
+      <Comment>商品净含量</Comment>
+      <DataType>varchar(10)|0</DataType>
+    </column>
+    <index id="33" parent="12" name="category_name">
+      <ColNames>category_name</ColNames>
+    </index>
+    <index id="34" parent="12" name="goods_name">
+      <ColNames>goods_name</ColNames>
+    </index>
+    <index id="35" parent="12" name="goods_unit">
+      <ColNames>goods_unit</ColNames>
+    </index>
+    <index id="36" parent="12" name="supplier_name">
+      <ColNames>supplier_name</ColNames>
+    </index>
+    <index id="37" parent="12" name="supplier_price">
+      <ColNames>supplier_price</ColNames>
+    </index>
+    <index id="38" parent="12" name="goods_price">
+      <ColNames>goods_price</ColNames>
+    </index>
+    <index id="39" parent="12" name="supplier_address">
+      <ColNames>supplier_address</ColNames>
+    </index>
+    <key id="40" parent="12" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>goods_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="41" parent="12" name="goods_ibfk_1">
+      <ColNames>category_name</ColNames>
+      <RefSchemaName>sms</RefSchemaName>
+      <RefTableName>category</RefTableName>
+      <RefColNames>category_name</RefColNames>
+    </foreign-key>
+    <column id="42" parent="13" name="purchase_id">
+      <Position>1</Position>
+      <Comment>采购编号</Comment>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="43" parent="13" name="goods_name">
+      <Position>2</Position>
+      <Comment>采购商品名称</Comment>
+      <DataType>varchar(50)|0</DataType>
+    </column>
+    <column id="44" parent="13" name="supplier_price">
+      <Position>3</Position>
+      <Comment>采购价格</Comment>
+      <DataType>decimal(10,2)|0</DataType>
+    </column>
+    <column id="45" parent="13" name="goods_num">
+      <Position>4</Position>
+      <Comment>采购数量</Comment>
+      <DataType>varchar(11)|0</DataType>
+    </column>
+    <column id="46" parent="13" name="purchase_time">
+      <Position>5</Position>
+      <Comment>采购时间</Comment>
+      <DataType>datetime|0</DataType>
+    </column>
+    <column id="47" parent="13" name="category_name">
+      <Position>6</Position>
+      <Comment>采购种类</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <column id="48" parent="13" name="purchase_manager">
+      <Position>7</Position>
+      <Comment>采购管理员</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <index id="49" parent="13" name="category_name">
+      <ColNames>category_name</ColNames>
+    </index>
+    <index id="50" parent="13" name="goods_name">
+      <ColNames>goods_name</ColNames>
+    </index>
+    <index id="51" parent="13" name="purchase_manager">
+      <ColNames>purchase_manager</ColNames>
+    </index>
+    <key id="52" parent="13" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>purchase_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="53" parent="13" name="purchase_ibfk_1">
+      <ColNames>category_name</ColNames>
+      <RefSchemaName>sms</RefSchemaName>
+      <RefTableName>category</RefTableName>
+      <RefColNames>category_name</RefColNames>
+    </foreign-key>
+    <foreign-key id="54" parent="13" name="purchase_ibfk_3">
+      <ColNames>purchase_manager</ColNames>
+      <RefSchemaName>sms</RefSchemaName>
+      <RefTableName>userinfo</RefTableName>
+      <RefColNames>user_name</RefColNames>
+    </foreign-key>
+    <column id="55" parent="14" name="sales_id">
+      <Position>1</Position>
+      <DataType>int(10)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="56" parent="14" name="goods_name">
+      <Position>2</Position>
+      <Comment>销售商品名称</Comment>
+      <DataType>varchar(50)|0</DataType>
+    </column>
+    <column id="57" parent="14" name="goods_barcode">
+      <Position>3</Position>
+      <Comment>商品条码</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <column id="58" parent="14" name="goods_unit">
+      <Position>4</Position>
+      <Comment>销售商品规格</Comment>
+      <DataType>varchar(5)|0</DataType>
+    </column>
+    <column id="59" parent="14" name="goods_num">
+      <Position>5</Position>
+      <Comment>销售商品数量</Comment>
+      <DataType>varchar(11)|0</DataType>
+    </column>
+    <column id="60" parent="14" name="sales_time">
+      <Position>6</Position>
+      <Comment>销售商品时间</Comment>
+      <DataType>datetime|0</DataType>
+    </column>
+    <column id="61" parent="14" name="goods_price">
+      <Position>7</Position>
+      <Comment>销售商品单价</Comment>
+      <DataType>decimal(10,2)|0</DataType>
+    </column>
+    <column id="62" parent="14" name="sales_total_amount">
+      <Position>8</Position>
+      <Comment>销售商品总价</Comment>
+      <DataType>decimal(11,2)|0</DataType>
+    </column>
+    <column id="63" parent="14" name="sales_manager">
+      <Position>9</Position>
+      <Comment>销售管理员</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <index id="64" parent="14" name="goods_price">
+      <ColNames>goods_price</ColNames>
+    </index>
+    <index id="65" parent="14" name="sales_manager">
+      <ColNames>sales_manager</ColNames>
+    </index>
+    <key id="66" parent="14" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>sales_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="67" parent="14" name="sales_ibfk_1">
+      <ColNames>sales_manager</ColNames>
+      <RefSchemaName>sms</RefSchemaName>
+      <RefTableName>userinfo</RefTableName>
+      <RefColNames>user_name</RefColNames>
+    </foreign-key>
+    <column id="68" parent="15" name="supplier_id">
+      <Position>1</Position>
+      <Comment>供货商编号</Comment>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="69" parent="15" name="supplier_name">
+      <Position>2</Position>
+      <Comment>供货商名称</Comment>
+      <DataType>varchar(50)|0</DataType>
+    </column>
+    <column id="70" parent="15" name="goods_name">
+      <Position>3</Position>
+      <Comment>供货商品</Comment>
+      <DataType>varchar(50)|0</DataType>
+    </column>
+    <column id="71" parent="15" name="supplier_price">
+      <Position>4</Position>
+      <Comment>供货商品单价</Comment>
+      <DataType>decimal(10,2)|0</DataType>
+    </column>
+    <column id="72" parent="15" name="supplier_address">
+      <Position>5</Position>
+      <Comment>供货商地址</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <column id="73" parent="15" name="supplier_personnel">
+      <Position>6</Position>
+      <Comment>供货商联系人</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <column id="74" parent="15" name="supplier_tel">
+      <Position>7</Position>
+      <Comment>供货商电话</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <column id="75" parent="15" name="supplier_email">
+      <Position>8</Position>
+      <Comment>供货商邮箱</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <column id="76" parent="15" name="category_name">
+      <Position>9</Position>
+      <Comment>供货商品种类</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <column id="77" parent="15" name="goods_unit">
+      <Position>10</Position>
+      <Comment>商品单位</Comment>
+      <DataType>varchar(5)|0</DataType>
+    </column>
+    <index id="78" parent="15" name="category_name">
+      <ColNames>category_name</ColNames>
+    </index>
+    <index id="79" parent="15" name="goods_unit">
+      <ColNames>goods_unit</ColNames>
+    </index>
+    <index id="80" parent="15" name="supplier_address">
+      <ColNames>supplier_address</ColNames>
+    </index>
+    <index id="81" parent="15" name="supplier_name">
+      <ColNames>supplier_name</ColNames>
+    </index>
+    <index id="82" parent="15" name="supplier_price">
+      <ColNames>supplier_price</ColNames>
+    </index>
+    <index id="83" parent="15" name="goods_name">
+      <ColNames>goods_name</ColNames>
+    </index>
+    <key id="84" parent="15" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>supplier_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="85" parent="15" name="supplier_ibfk_2">
+      <ColNames>category_name</ColNames>
+      <RefSchemaName>sms</RefSchemaName>
+      <RefTableName>category</RefTableName>
+      <RefColNames>category_name</RefColNames>
+    </foreign-key>
+    <foreign-key id="86" parent="15" name="supplier_ibfk_3">
+      <ColNames>goods_unit</ColNames>
+      <RefSchemaName>sms</RefSchemaName>
+      <RefTableName>goods</RefTableName>
+      <RefColNames>goods_unit</RefColNames>
+    </foreign-key>
+    <column id="87" parent="16" name="user_Id">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="88" parent="16" name="user_account">
+      <Position>2</Position>
+      <Comment>用户账号</Comment>
+      <DataType>varchar(25)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="89" parent="16" name="user_password">
+      <Position>3</Position>
+      <Comment>用户密码</Comment>
+      <DataType>varchar(25)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="90" parent="16" name="user_name">
+      <Position>4</Position>
+      <Comment>用户姓名</Comment>
+      <DataType>varchar(25)|0</DataType>
+    </column>
+    <column id="91" parent="16" name="user_sex">
+      <Position>5</Position>
+      <Comment>用户性别</Comment>
+      <DataType>varchar(10)|0</DataType>
+    </column>
+    <column id="92" parent="16" name="user_tel">
+      <Position>6</Position>
+      <Comment>用户电话</Comment>
+      <DataType>varchar(30)|0</DataType>
+    </column>
+    <column id="93" parent="16" name="user_email">
+      <Position>7</Position>
+      <Comment>用户邮箱</Comment>
+      <DataType>varchar(30)|0</DataType>
+    </column>
+    <column id="94" parent="16" name="user_position">
+      <Position>8</Position>
+      <Comment>用户职位</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <column id="95" parent="16" name="user_department">
+      <Position>9</Position>
+      <Comment>用户部门</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <index id="96" parent="16" name="user_name">
+      <ColNames>user_name</ColNames>
+    </index>
+    <key id="97" parent="16" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>user_Id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="98" parent="17" name="warehouse_id">
+      <Position>1</Position>
+      <Comment>仓库编号</Comment>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="99" parent="17" name="goods_name">
+      <Position>2</Position>
+      <Comment>商品名称</Comment>
+      <DataType>varchar(50)|0</DataType>
+    </column>
+    <column id="100" parent="17" name="goods_barcode">
+      <Position>3</Position>
+      <Comment>商品条码</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <column id="101" parent="17" name="goods_price">
+      <Position>4</Position>
+      <Comment>商品进货价</Comment>
+      <DataType>decimal(10,2)|0</DataType>
+    </column>
+    <column id="102" parent="17" name="supplier_name">
+      <Position>5</Position>
+      <Comment>商品供货商</Comment>
+      <DataType>varchar(50)|0</DataType>
+    </column>
+    <column id="103" parent="17" name="goods_inventory">
+      <Position>6</Position>
+      <Comment>商品库存量</Comment>
+      <DataType>int(10)|0</DataType>
+    </column>
+    <column id="104" parent="17" name="category_name">
+      <Position>7</Position>
+      <Comment>商品种类</Comment>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <column id="105" parent="17" name="goods_unit">
+      <Position>8</Position>
+      <Comment>商品单位</Comment>
+      <DataType>varchar(5)|0</DataType>
+    </column>
+    <column id="106" parent="17" name="goods_content">
+      <Position>9</Position>
+      <Comment>商品规格</Comment>
+      <DataType>varchar(10)|0</DataType>
+    </column>
+    <key id="107" parent="17" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>warehouse_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+  </database-model>
+</dataSource>

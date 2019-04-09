@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+例如namespace="me.gacl.mapping.userMapper"就是me.gacl.mapping(包名)+userMapper(userMapper.xml文件去除后缀)
+ -->
+<mapper namespace="sms.dao.WareHouseDao">
+    <!-- 在select标签中编写查询的SQL语句， 设置select标签的id属性为getUser，id属性值必须是唯一的，不能够重复
+    使用parameterType属性指明查询时使用的参数类型，resultType属性指明查询返回的结果集类型
+    resultType="me.gacl.entity.User"就表示将查询结果封装成一个User类的对象返回
+    User类就是users表所对应的实体类
+    -->
+
+    <!-- 添加(Add)仓库商品信息 -->
+    <insert id="addWareHouse" parameterType="sms.entity.WareHouse">
+        insert into warehouse(goods_name, goods_barcode,goods_content, goods_price, goods_unit, goods_inventory, category_name, supplier_name)
+        VALUES (#{goodsName},#{goodsBarcode},#{goodsContent},#{goodsPrice},#{goodsUnit},#{goodsInventory},#{categoryName},#{supplierName})
+    </insert>
+
+    <!-- 删除(Delete)仓库商品信息 -->
+    <delete id="deleteWareHouse" parameterType="int">
+        delete from warehouse where warehouse_id=#{warehouseId}
+    </delete>
+
+    <!-- 修改(Update)仓库商品信息 -->
+    <update id="updateWareHouse" parameterType="sms.entity.WareHouse">
+        update
+        <set>
+            <if test="goodsName != null and goodsName != '' ">
+                goods_name=#{goodsName}
+            </if>
+            <if test="goodsBarcode != null and goodsBarcode != '' ">
+                goods_barcode=#{goodsBarcode}
+            </if>
+            <if test="goodsPrice != null and goodsPrice != '' ">
+                goods_price=#{goodsPrice}
+            </if>
+            <if test="supplierName != null and supplierName != '' ">
+                supplier_name=#{supplierName}
+            </if>
+            <if test="goodsInventory != null and goodsInventory != '' ">
+                goods_inventory=#{goodsInventory}
+            </if>
+            <if test="categoryName != null and categoryName != '' ">
+                category_name=#{categoryName}
+            </if>
+            <if test="goodsUnit != null and goodsUnit != '' ">
+                goods_unit=#{goodsUnit}
+            </if>
+        </set>
+        where goods_name=#{goodsName}
+    </update>
+
+    <!--根据条码goodsBarcode查询得到仓库商品-->
+    <select id="getWareHouseByGoodsBarcode" parameterType="String" resultMap="wareHouseResultMap">
+        select * from warehouse where goods_barcode LIKE concat('%',#{goodsBarcode},'%') limit 0,10
+    </select>
+
+    <!-- 查询仓库所有商品 -->
+    <select id="getAllWareHouse" resultMap="wareHouseResultMap">
+        select * from warehouse limit #{number},10
+    </select>
+
+    <!-- 根据goodsPrice降序查询仓库商品信息 -->
+    <select id="getWareHouseByGoodsPriceDESC" resultMap="wareHouseResultMap">
+        select * from warehouse order by goods_price DESC limit 10
+    </select>
+
+    <!-- 根据goodsPrice升序查询仓库商品信息 -->
+    <select id="getWareHouseByGoodsPriceASC" resultMap="wareHouseResultMap">
+        select * from warehouse order by goods_price ASC limit 10
+    </select>
+    <!-- 根据goodsInventory降序查询仓库商品信息 -->
+    <select id="getWareHouseByGoodsInventoryDESC" resultMap="wareHouseResultMap">
+        select * from warehouse order by goods_inventory DESC limit 10
+    </select>
+
+    <!-- 根据goodsInventory升序查询仓库商品信息 -->
+    <select id="getWareHouseByGoodsInventoryASC" resultMap="wareHouseResultMap">
+        select * from warehouse order by goods_inventory ASC limit 10
+    </select>
+
+    <!-- 根据categoryName条件查询仓库商品信息 -->
+    <select id="getWareHouseByCategoryName" resultMap="wareHouseResultMap">
+        select * from warehouse where category_name LIKE concat('%',#{categoryName},'%') limit 10
+    </select>
+
+    <!-- 根据goodsName条件查询仓库商品信息 -->
+    <select id="getWareHouseByGoodsName" resultMap="wareHouseResultMap">
+        select * from warehouse where goods_name=#{goodsName}
+    </select>
+
+    <resultMap id="wareHouseResultMap" type="sms.entity.WareHouse">
+        <id property="warehouseId" column="warehouse_id"/>
+        <result property="goodsName" column="goods_name"/>
+        <result property="goodsBarcode" column="goods_barcode"/>
+        <result property="goodsPrice" column="goods_price"/>
+        <result property="supplierName" column="supplier_name"/>
+        <result property="goodsInventory" column="goods_inventory"/>
+        <result property="categoryName" column="category_name"/>
+        <result property="goodsUnit" column="goods_unit"/>
+        <result property="goodsContent" column="goods_content"/>
+    </resultMap>
+</mapper>

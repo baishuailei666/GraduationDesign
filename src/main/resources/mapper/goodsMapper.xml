@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+例如namespace="me.gacl.mapping.userMapper"就是me.gacl.mapping(包名)+userMapper(userMapper.xml文件去除后缀)
+ -->
+<mapper namespace="sms.dao.GoodsDao">
+    <!-- 在select标签中编写查询的SQL语句， 设置select标签的id属性为getUser，id属性值必须是唯一的，不能够重复
+    使用parameterType属性指明查询时使用的参数类型，resultType属性指明查询返回的结果集类型
+    resultType="me.gacl.entity.User"就表示将查询结果封装成一个User类的对象返回
+    User类就是users表所对应的实体类
+    -->
+
+    <!-- 添加(Add)商品信息 -->
+    <insert id="addGoods" parameterType="sms.entity.Goods">
+        insert into goods(goods_name, goods_barcode, goods_unit, supplier_price, goods_price, supplier_name, category_name, goods_sc, goods_content)
+        values(#{goodsName},#{goodsBarcode},#{goodsUnit},#{supplierPrice},#{goodsPrice},#{supplierName},#{categoryName},#{goodsSc},#{goodsContent})
+    </insert>
+
+    <!-- 删除(Delete)商品信息 -->
+    <delete id="deleteGoods" parameterType="int">
+        delete from goods where goods_id=#{goodsId}
+    </delete>
+
+    <!-- 修改(Update)商品信息 -->
+    <update id="updateGoods" parameterType="sms.entity.Goods">
+        update goods
+        <set>
+            <if test="goodsName != null and goodsName != '' ">
+                goods_name=#{goodsName},
+            </if>
+            <if test="goodsBarcode != null and goodsBarcode != '' ">
+                goods_barcode=#{goodsBarcode},
+            </if>
+            <if test="goodsUnit != null and goodsUnit != '' ">
+                goods_unit=#{goodsUnit},
+            </if>
+            <if test="supplierPrice != null and supplierPrice != '' ">
+                supplier_price=#{supplierPrice},
+            </if>
+            <if test="goodsPrice != null and goodsPrice != '' ">
+                goods_price=#{goodsPrice},
+            </if>
+            <if test="supplierName != null and supplierName != '' ">
+                supplier_name=#{supplierName},
+            </if>
+            <if test="supplierAddress != null and supplierAddress != '' ">
+                supplier_address=#{supplierAddress},
+            </if>
+            <if test="categoryName != null and categoryName != '' ">
+                category_name=#{categoryName},
+            </if>
+            <if test="goodsSc != null and goodsSc != '' ">
+                goods_sc=#{goodsSc},
+            </if>
+            <if test="goodsContent != null and goodsContent != '' ">
+                goods_content=#{goodsContent},
+            </if>
+        </set>
+        where goods_name=#{goodsName}
+    </update>
+    <!--根据商品名称goodsName查询商品信息-->
+    <select id="getGoodsByNameAuto" parameterType="String" resultMap="goodsResultMap">
+        select * from goods where goods_name = #{goodsName}
+    </select>
+    <!--根据商品名称goodsName查询商品信息-->
+    <select id="getGoodsByName" parameterType="String" resultMap="goodsResultMap">
+        select * from goods where goods_name LIKE concat('%',#{goodsName},'%') limit 0,10
+    </select>
+
+    <!--根据商品条码goodsBarcode查询商品信息-->
+    <select id="getGoodsByBarcode" parameterType="String" resultMap="goodsResultMap">
+        select * from goods where goods_barcode LIKE concat('%',#{goodsBarcode},'%') limit 0,10
+    </select>
+
+    <!--根据种类categoryName查询商品信息-->
+    <select id="getGoodsByCategoryName" parameterType="String" resultMap="goodsResultMap">
+        select * from goods where category_name LIKE concat('%',#{categoryName},'%') limit 0,10
+    </select>
+
+    <!-- 查询所有商品信息 -->
+    <select id="getAllGoods" resultMap="goodsResultMap">
+        select * from goods limit #{number},10
+    </select>
+
+    <resultMap id="goodsResultMap" type="sms.entity.Goods">
+        <id property="goodsId" column="goods_id"/>
+        <result property="goodsName" column="goods_name"/>
+        <result property="goodsBarcode" column="goods_barcode"/>
+        <result property="goodsUnit" column="goods_unit"/>
+        <result property="supplierPrice" column="supplier_price"/>
+        <result property="goodsPrice" column="goods_price"/>
+        <result property="supplierName" column="supplier_name"/>
+        <result property="categoryName" column="category_name"/>
+        <result property="goodsSc" column="goods_sc"/>
+        <result property="goodsContent" column="goods_content"/>
+    </resultMap>
+</mapper>

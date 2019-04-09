@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+例如namespace="me.gacl.mapping.userMapper"就是me.gacl.mapping(包名)+userMapper(userMapper.xml文件去除后缀)
+ -->
+<mapper namespace="sms.dao.PurchaseDao">
+    <!-- 在select标签中编写查询的SQL语句， 设置select标签的id属性为getUser，id属性值必须是唯一的，不能够重复
+    使用parameterType属性指明查询时使用的参数类型，resultType属性指明查询返回的结果集类型
+    resultType="me.gacl.entity.User"就表示将查询结果封装成一个User类的对象返回
+    User类就是users表所对应的实体类
+    -->
+
+    <!-- 添加(Add)采购信息 -->
+    <insert id="addPurchase" parameterType="sms.entity.Purchase">
+        insert into purchase(goods_name, supplier_price, goods_num, purchase_manager, purchase_time, category_name)
+        values(#{goodsName},#{supplierPrice},#{goodsNum},#{purchaseManager},#{purchaseTime},#{categoryName})
+    </insert>
+
+    <!-- 删除(Delete)采购信息 -->
+    <delete id="deletePurchase" parameterType="int">
+        delete from purchase where purchase_id=#{purchaseId}
+    </delete>
+
+    <!-- 修改(Update)采购信息 -->
+    <update id="updatePurchase" parameterType="sms.entity.Purchase">
+        update purchase
+        <set>
+            <if test="goodsName != null and goodsName != '' ">
+                goods_name=#{goodsName},
+            </if>
+            <if test="supplierPrice != null and supplierPrice != '' ">
+                supplier_price=#{supplierPrice},
+            </if>
+            <if test="goodsNum != null and goodsNum != '' ">
+                goods_num=#{goodsNum},
+            </if>
+            <if test="purchaseManager != null and purchaseManager != '' ">
+                purchase_manager=#{purchaseManager},
+            </if>
+            <if test="purchaseTime != null and purchaseTime != '' ">
+                purchase_time=#{purchaseTime},
+            </if>
+            <if test="categoryName != null and categoryName != '' ">
+                category_name=#{categoryName},
+            </if>
+        </set>
+        where goods_name=#{goodsName}
+    </update>
+
+    <!--根据采购商品名称goodsName查询采购信息-->
+    <select id="getPurchaseByName" parameterType="String" resultMap="purchaseResultMap">
+        select * from purchase where goods_name LIKE concat('%',#{goodsName},'%') limit 0,10
+    </select>
+
+    <!--根据采购时间purchaseTime降序查询采购信息-->
+    <select id="getPurchaseByTime" parameterType="String" resultMap="purchaseResultMap">
+        select * from purchase where purchase_time LIKE concat('%',#{purchaseTime},'%') order by purchase_time DESC
+    </select>
+
+    <!--根据种类categoryName查询采购信息-->
+    <select id="getPurchaseByCategoryName" parameterType="String" resultMap="purchaseResultMap">
+        select * from purchase where category_name LIKE concat('%',#{categoryName},'%') limit 0,10
+    </select>
+
+    <!-- 查询所有采购信息 -->
+    <select id="getAllPurchase" resultMap="purchaseResultMap">
+        select * from purchase limit #{number},10
+    </select>
+
+    <resultMap id="purchaseResultMap" type="sms.entity.Purchase">
+        <id property="purchaseId" column="purchase_id"/>
+        <result property="goodsName" column="goods_name"/>
+        <result property="supplierPrice" column="supplier_price"/>
+        <result property="goodsNum" column="goods_num"/>
+        <result property="purchaseManager" column="purchase_manager"/>
+        <result property="purchaseTime" column="purchase_time"/>
+        <result property="categoryName" column="category_name"/>
+    </resultMap>
+</mapper>

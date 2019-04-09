@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+例如namespace="me.gacl.mapping.userMapper"就是me.gacl.mapping(包名)+userMapper(userMapper.xml文件去除后缀)
+ -->
+<mapper namespace="sms.dao.SalesDao">
+    <!-- 在select标签中编写查询的SQL语句， 设置select标签的id属性为getUser，id属性值必须是唯一的，不能够重复
+    使用parameterType属性指明查询时使用的参数类型，resultType属性指明查询返回的结果集类型
+    resultType="me.gacl.entity.User"就表示将查询结果封装成一个User类的对象返回
+    User类就是users表所对应的实体类
+    -->
+
+    <!-- 添加(Add)销售信息 -->
+    <insert id="addSales" parameterType="sms.entity.Sales">
+        insert into sales(goods_name, goods_barcode, goods_unit, goods_num, sales_time, goods_price, sales_total_amount, sales_manager)
+        values(#{goodsName},#{goodsBarcode},#{goodsUnit},#{goodsNum},#{salesTime},#{goodsPrice},#{salesTotalAmount},#{salesManager})
+    </insert>
+
+    <!-- 删除(Delete)销售信息 -->
+    <delete id="deleteSales" parameterType="int">
+        delete from sales where sales_id=#{salesId}
+    </delete>
+
+    <!-- 修改(Update)销售信息 -->
+    <update id="updateSales" parameterType="sms.entity.Sales">
+        update sales
+        <set>
+            <if test="goodsName != null and goodsName != '' ">
+                goods_name=#{goodsName},
+            </if>
+            <if test="goodsBarcode != null and goodsBarcode != '' ">
+                goods_barcode=#{goodsBarcode},
+            </if>
+            <if test="goodsUnit != null and goodsUnit != '' ">
+                goods_unit=#{goodsUnit},
+            </if>
+            <if test="goodsNum != null and goodsNum != '' ">
+                goods_num=#{goodsNum},
+            </if>
+            <if test="salesTime != null and salesTime != '' ">
+                sales_time=#{salesTime},
+            </if>
+            <if test="goodsPrice != null and goodsPrice != '' ">
+                goods_price=#{goodsPrice},
+            </if>
+            <if test="salesTotalAmount != null and salesTotalAmount != '' ">
+                sales_total_amount=#{salesTotalAmount},
+            </if>
+            <if test="salesManager != null and salesManager != '' ">
+                sales_manager=#{salesManager},
+            </if>
+        </set>
+        where goods_name=#{goodsName}
+    </update>
+
+    <!--根据销售商品名称goodsName查询销售信息-->
+    <select id="getSalesByName" parameterType="String" resultMap="salesResultMap">
+        select * from sales where goods_name LIKE concat('%',#{goodsName},'%') limit 0,10
+    </select>
+
+    <!--根据销售日期date 降序查询销售信息-->
+    <select id="getSalesByDate" parameterType="String" resultMap="salesResultMap">
+        select * from sales where sales_time LIKE concat('%',#{salesTime},'%') order by sales_time DESC
+    </select>
+
+    <!--根据销售时间time 降序查询销售信息-->
+    <select id="getSalesByTimeDESC" parameterType="String" resultMap="salesResultMap">
+        select * from sales order by sales_time DESC limit 10
+    </select>
+
+    <!--据销售时间time 升序查询销售信息息-->
+    <select id="getSalesByTimeASC" parameterType="String" resultMap="salesResultMap">
+        select * from sales order by sales_time ASC limit 10
+    </select>
+
+    <!--根据销售总价amount 降序查询销售信息-->
+    <select id="getSalesByAmountDESC" parameterType="String" resultMap="salesResultMap">
+        select * from sales order by sales_total_amount DESC limit 10
+    </select>
+
+    <!--根据销售总价amount 升序查询销售信息-->
+    <select id="getSalesByAmountASC" parameterType="String" resultMap="salesResultMap">
+        select * from sales order by sales_total_amount ASC limit 10
+    </select>
+
+    <!-- 查询所有销售信息 -->
+    <select id="getAllSales" resultMap="salesResultMap">
+        select * from sales limit #{number},10
+    </select>
+
+    <resultMap id="salesResultMap" type="sms.entity.Sales">
+        <id property="salesId" column="sales_id"/>
+        <result property="goodsName" column="goods_name"/>
+        <result property="goodsBarcode" column="goods_barcode"/>
+        <result property="goodsUnit" column="goods_unit"/>
+        <result property="goodsNum" column="goods_num"/>
+        <result property="salesTime" column="sales_time"/>
+        <result property="goodsPrice" column="goods_price"/>
+        <result property="salesTotalAmount" column="sales_total_amount"/>
+        <result property="salesManager" column="sales_manager"/>
+    </resultMap>
+</mapper>

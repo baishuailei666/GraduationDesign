@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+例如namespace="me.gacl.mapping.userMapper"就是me.gacl.mapping(包名)+userMapper(userMapper.xml文件去除后缀)
+ -->
+<mapper namespace="sms.dao.UserInfoDao">
+    <!-- 在select标签中编写查询的SQL语句， 设置select标签的id属性为getUser，id属性值必须是唯一的，不能够重复
+    使用parameterType属性指明查询时使用的参数类型，resultType属性指明查询返回的结果集类型
+    resultType="me.gacl.entity.User"就表示将查询结果封装成一个User类的对象返回
+    User类就是users表所对应的实体类
+    -->
+
+    <!-- 创建(Add)用户信息 -->
+    <insert id="addUserInfo" parameterType="sms.entity.UserInfo">
+        insert into userinfo(user_account,user_password,user_name,user_sex,user_tel,user_email,user_position,user_department)
+        values(#{userAccount},#{userPassword},#{userName},#{userSex},#{userTel},#{userEmail},#{userPosition},#{userDepartment})
+    </insert>
+
+    <!-- 删除(Delete)用户信息 -->
+    <delete id="deleteUserInfo" parameterType="int">
+        delete from userinfo where user_Id=#{userId}
+    </delete>
+
+    <!-- 修改(Update)用户信息 -->
+    <update id="updateUserInfo" parameterType="sms.entity.UserInfo">
+        update userinfo
+        <set>
+            <if test="userAccount != null and userAccount != '' ">
+                user_account=#{userAccount},
+            </if>
+            <if test="userPassword != null and userPassword != '' ">
+                user_password=#{userPassword},
+            </if>
+            <if test="userName != null and userName != '' ">
+                user_name=#{userName},
+            </if>
+            <if test="userSex != null and userSex != '' ">
+                user_sex=#{userSex},
+            </if>
+            <if test="userTel != null and userTel != '' ">
+                user_tel=#{userTel},
+            </if>
+            <if test="userEmail != null and userEmail != '' ">
+                user_email=#{userEmail},
+            </if>
+            <if test="userPosition != null and userPosition != '' ">
+                user_position=#{userPosition},
+            </if>
+            <if test="userDepartment != null and userDepartment != '' ">
+                user_department=#{userDepartment},
+            </if>
+        </set>
+        where user_account=#{userAccount}
+    </update>
+
+    <!--根据部门查询得到一个用户信息-->
+    <select id="getUserInfoByDepartment" parameterType="String" resultMap="userResultMap">
+        select * from userinfo where user_department LIKE concat('%',#{userDepartment},'%') limit 0,10
+    </select>
+
+    <!--根据账号查询得到一个用户信息-->
+    <select id="getUserInfoByAccount" parameterType="String" resultMap="userResultMap">
+        select * from userinfo where user_account = #{userAccount}
+    </select>
+
+    <!--根据姓名查询得到一个用户信息-->
+    <select id="getUserInfoByName" parameterType="String" resultMap="userResultMap">
+        select * from userinfo where user_name = #{userName}
+    </select>
+
+    <!-- 查询所有用户信息 -->
+    <select id="getAllUserInfo" resultMap="userResultMap">
+        select * from userinfo limit #{number},10
+    </select>
+    <!-- 用户登录 -->
+    <select id="userLogin" resultMap="userResultMap">
+        select user_password from userinfo where user_account=#{userAccount}
+    </select>
+
+
+    <resultMap id="userResultMap" type="sms.entity.UserInfo">
+        <id property="userId" column="user_id"/>
+        <result property="userAccount" column="user_account"/>
+        <result property="userPassword" column="user_password"/>
+        <result property="userName" column="user_name"/>
+        <result property="userSex" column="user_sex"/>
+        <result property="userTel" column="user_tel"/>
+        <result property="userEmail" column="user_email"/>
+        <result property="userPosition" column="user_position"/>
+        <result property="userDepartment" column="user_department"/>
+    </resultMap>
+</mapper>
